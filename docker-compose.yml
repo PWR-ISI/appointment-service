@@ -1,0 +1,32 @@
+services:
+  app:
+    build: .
+    container_name: appointment-service
+    command: gunicorn appointment.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    environment:
+      - DJANGO_DB_HOST=db
+      - DJANGO_DB_NAME=appointment_db
+      - DJANGO_DB_USER=appointment_user
+      - DJANGO_DB_PASSWORD=othersecretpassword
+    ports:
+      - "8001:8000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15-alpine
+    container_name: postgres-appointment-service
+    restart: always
+    environment:
+      POSTGRES_DB: appointment_db
+      POSTGRES_USER: appointment_user
+      POSTGRES_PASSWORD: othersecretpassword
+    volumes:
+      - postgres-appointment-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-appointment-data:
