@@ -2,16 +2,24 @@ services:
   app:
     build: .
     container_name: appointment-service
-    command: gunicorn appointment.wsgi:application --bind 0.0.0.0:8000
-    volumes:
-      - .:/app
     env_file:
       - .env
     environment:
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-dev-not-secret-change-me}
+      - DEBUG=${DEBUG:-True}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-*}
       - DJANGO_DB_HOST=db
+      - DJANGO_DB_PORT=5432
       - DJANGO_DB_NAME=appointment_db
       - DJANGO_DB_USER=appointment_user
       - DJANGO_DB_PASSWORD=othersecretpassword
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - AWS_ENDPOINT_URL=${AWS_ENDPOINT_URL:-}
+      - APPOINTMENT_SNS_TOPIC_ARN=${APPOINTMENT_SNS_TOPIC_ARN:-}
+      - EVENTS_SQS_QUEUE_URL=${EVENTS_SQS_QUEUE_URL:-}
+      - SCHEDULE_SERVICE_URL=${SCHEDULE_SERVICE_URL:-http://host.docker.internal:8008}
+      - INTERNAL_SHARED_TOKEN=${INTERNAL_SHARED_TOKEN:-dev-internal-token}
+      - SLOT_RESERVATION_TTL_MINUTES=${SLOT_RESERVATION_TTL_MINUTES:-10}
     ports:
       - "8001:8000"
     depends_on:
