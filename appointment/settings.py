@@ -65,11 +65,11 @@ WSGI_APPLICATION = "appointment.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("DJANGO_DB_NAME", default="appointment_db"),
-        "USER": env("DJANGO_DB_USER", default="appointment_user"),
-        "PASSWORD": env("DJANGO_DB_PASSWORD", default="othersecretpassword"),
-        "HOST": env("DJANGO_DB_HOST", default="db"),
-        "PORT": env("DJANGO_DB_PORT", default="5432"),
+        "NAME": env("DJANGO_DB_NAME", default=os.getenv("DB_NAME", "appointment_db")),
+        "USER": env("DJANGO_DB_USER", default=os.getenv("DB_USER", "appointment_user")),
+        "PASSWORD": env("DJANGO_DB_PASSWORD", default=os.getenv("DB_PASSWORD", "othersecretpassword")),
+        "HOST": env("DJANGO_DB_HOST", default=os.getenv("DB_HOST", "db")),
+        "PORT": env("DJANGO_DB_PORT", default=os.getenv("DB_PORT", "5432")),
     }
 }
 

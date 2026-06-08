@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 set -e
 
-DB_HOST="${DJANGO_DB_HOST:-db}"
-DB_PORT="${DJANGO_DB_PORT:-5432}"
+DB_HOST="${DJANGO_DB_HOST:-${DB_HOST:-db}}"
+DB_PORT="${DJANGO_DB_PORT:-${DB_PORT:-5432}}"
 
 echo "Waiting for database at ${DB_HOST}:${DB_PORT}..."
 until nc -z "${DB_HOST}" "${DB_PORT}"; do
