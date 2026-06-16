@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "corsheaders",
     "drf_spectacular",
     "common",
     "apps.appointments",
@@ -34,6 +35,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "common.auth.JWTStubMiddleware",
@@ -117,6 +119,12 @@ AWS_REGION = env("AWS_REGION", default="us-east-1")
 AWS_ENDPOINT_URL = env("AWS_ENDPOINT_URL", default="") or None
 APPOINTMENT_SNS_TOPIC_ARN = env("APPOINTMENT_SNS_TOPIC_ARN", default="")
 EVENTS_SQS_QUEUE_URL = env("EVENTS_SQS_QUEUE_URL", default="")
+
+CORS_ALLOWED_ORIGINS = env.list(
+    "CORS_ALLOWED_ORIGINS",
+    default=["http://localhost:3000", "http://127.0.0.1:3000"],
+)
+CORS_ALLOW_CREDENTIALS = True
 
 SCHEDULE_SERVICE_URL = env("SCHEDULE_SERVICE_URL", default="http://schedule-service:8000")
 INTERNAL_SHARED_TOKEN = env("INTERNAL_SHARED_TOKEN", default="dev-internal-token")

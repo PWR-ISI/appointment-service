@@ -34,7 +34,7 @@ class ScheduleClient:
         }
 
     def reserve_slot(self, slot_id, appointment_id, ttl_minutes: Optional[int] = None) -> dict:
-        url = f"{self.base}/api/v1/slots/{slot_id}/reserve/"
+        url = f"{self.base}/api/v1/slots/{slot_id}/reserve"
         body = {"appointment_id": str(appointment_id)}
         if ttl_minutes is not None:
             body["ttl_minutes"] = ttl_minutes
@@ -50,7 +50,7 @@ class ScheduleClient:
         return r.json()
 
     def release_slot(self, slot_id) -> None:
-        url = f"{self.base}/api/v1/slots/{slot_id}/release/"
+        url = f"{self.base}/api/v1/slots/{slot_id}/release"
         try:
             r = self.session.post(url, headers=self._headers(), timeout=self.timeout)
         except requests.RequestException as exc:
@@ -60,7 +60,7 @@ class ScheduleClient:
             logger.warning("Schedule release returned %s", r.status_code)
 
     def confirm_slot(self, slot_id) -> None:
-        url = f"{self.base}/api/v1/slots/{slot_id}/confirm/"
+        url = f"{self.base}/api/v1/slots/{slot_id}/confirm"
         try:
             r = self.session.post(url, headers=self._headers(), timeout=self.timeout)
         except requests.RequestException as exc:
