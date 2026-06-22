@@ -31,6 +31,7 @@ class JWTStubMiddleware:
     def __call__(self, request):
         request.user_id = None
         request.user_role = None
+        request.user_email = ""
         request.is_internal = (
             request.headers.get("X-Internal-Token") == settings.INTERNAL_SHARED_TOKEN
         )
@@ -48,6 +49,7 @@ class JWTStubMiddleware:
                 )
                 request.user_id = payload.get("sub")
                 request.user_role = payload.get("role")
+                request.user_email = payload.get("email", "")
             except jwt.PyJWTError as exc:
                 logger.warning("Failed to decode JWT: %s", exc)
 

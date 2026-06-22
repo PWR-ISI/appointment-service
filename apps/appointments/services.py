@@ -52,6 +52,7 @@ class AppointmentService:
         notes: str = "",
         idempotency_key: Optional[str] = None,
         client: Optional[ScheduleClient] = None,
+        patient_email: str = "",
     ) -> Appointment:
         if idempotency_key:
             existing = IdempotencyRecord.objects.select_related("appointment").filter(
@@ -82,7 +83,8 @@ class AppointmentService:
         if idempotency_key:
             IdempotencyRecord.objects.create(key=idempotency_key, appointment=appointment)
 
-        AppointmentService._publish("appointment.created", appointment)
+        AppointmentService._publish("appointment.created", appointment,
+                                     extra={"patient_email": patient_email} if patient_email else None)
         return appointment
 
     @staticmethod

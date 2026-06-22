@@ -84,6 +84,7 @@ class AppointmentViewSet(ViewSet):
             **serializer.validated_data,
             created_by_user_id=request.user_id or serializer.validated_data["patient_id"],
             idempotency_key=idempotency_key,
+            patient_email=getattr(request, "user_email", ""),
         )
         return Response(AppointmentSerializer(appointment).data, status=status.HTTP_201_CREATED)
 
